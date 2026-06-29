@@ -1,23 +1,16 @@
-print("Program Started")import requests
 import pandas as pd
-from bs4 import BeautifulSoup
 
-print("=" * 50)
-print("       JOBHUNTER AI v1.0")
-print("=" * 50)
+def search_jobs():
+    df = pd.read_csv("output/jobs.csv")
 
-url = "https://remoteok.com/remote-data+analyst-jobs"
+    keyword = input("Enter keyword: ").lower()
 
-headers = {
-    "User-Agent": "Mozilla/5.0"
-}
+    result = df[
+        df["Title"].fillna("").str.lower().str.contains(keyword)
+    ]
 
-response = requests.get(url, headers=headers)
+    print("=" * 50)
+    print(f"Jobs Found : {len(result)}")
+    print("=" * 50)
 
-print("Website Status:", response.status_code)
-
-if response.status_code == 200:
-    print("Connection Successful")
-else:
-    print("Connection Failed")
-    
+    print(result[["Company", "Title"]].head(20))
