@@ -6,12 +6,24 @@ def test_html():
 
     df = pd.read_csv("output/jobs.csv")
 
-    description = df.iloc[0]["Description"]
+    keyword = input("Enter job keyword: ").lower()
 
-    clean_text = clean_html(description)
+    jobs = df[
+        df["Title"].fillna("").str.lower().str.contains(keyword)
+    ]
+
+    if len(jobs) == 0:
+        print("No jobs found")
+        return
+
+    jobs = jobs.reset_index(drop=True)
+
+    for i, row in jobs.iterrows():
+        print(f"{i+1}. {row['Title']}")
+
+    choice = int(input("Select Job Number: "))
+
+    description = jobs.iloc[choice - 1]["Description"]
 
     print("=" * 80)
-    print("CLEAN JOB DESCRIPTION")
-    print("=" * 80)
-
-    print(clean_text[:2000])
+    print(clean_html(description))

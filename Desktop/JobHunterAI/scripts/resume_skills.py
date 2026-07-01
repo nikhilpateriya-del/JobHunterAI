@@ -1,6 +1,7 @@
 import fitz
 
-def extract_skills():
+
+def extract_resume_skills(return_skills=False):
 
     pdf_path = "resume/Nikhil CV v1.pdf"
 
@@ -37,15 +38,20 @@ def extract_skills():
 
     for skill in skills:
         if skill in text:
-            found.append(skill)
+            found.append(skill.title())
+
+    if return_skills:
+        return found
 
     print("=" * 50)
     print("SKILLS FOUND")
     print("=" * 50)
 
     if len(found) == 0:
-        print("No skills found.")
+        print("❌ No skills found.")
 
     else:
         for skill in found:
-            print("✅", skill.title())
+            print(f"✅ {skill}")
+
+    return found
